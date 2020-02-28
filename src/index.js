@@ -1,12 +1,37 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from 'react'
+import Form from './Form'
+import Post from './Post'
+class App extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      posts: []
+    }
+    this.onSubmit = this.onSubmit.bind(this)
+  }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+  /**
+   * Updates posts to contain new posts whenever a new post is submitted
+   * @param {String} author
+   * @param {String} post
+   */
+  onSubmit (author, post) {
+    var posts = this.state.posts
+    this.setState({ posts: [...posts, [author, post]] })
+  }
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+  render () {
+    return (
+      <div className='container'>
+        <div className='text-center margin'>
+          <p className="h1 mb-4">CIS 197 Community</p>
+        </div>
+        <p className="h4 mb-4">New Post</p>
+        <Form onSubmit = { this.onSubmit }/>
+        {this.state.posts.map((post, i) => <Post key = {i} author = {post[0]} post = {post[1]} depth = {0}/>)}
+      </div>
+    )
+  }
+}
+
+export default App
